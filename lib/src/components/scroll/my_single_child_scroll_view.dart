@@ -371,50 +371,97 @@ class _RenderSingleChildViewport extends RenderBox
     return false;
   }
 
+  // @override
+  // RevealedOffset getOffsetToReveal(RenderObject target, double alignment,
+  //     {Rect? rect}) {
+  //   rect ??= target.paintBounds;
+  //   if (target is! RenderBox) {
+  //     return RevealedOffset(offset: offset.pixels, rect: rect);
+  //   }
+
+  //   final RenderBox targetBox = target;
+  //   final Matrix4 transform = targetBox.getTransformTo(this);
+  //   final Rect bounds = MatrixUtils.transformRect(transform, rect);
+  //   final Size contentSize = child!.size;
+
+  //   late double leadingScrollOffset;
+  //   late double targetMainAxisExtent;
+  //   late double mainAxisExtent;
+
+  //   switch (axisDirection) {
+  //     case AxisDirection.up:
+  //       mainAxisExtent = size.height;
+  //       leadingScrollOffset = contentSize.height - bounds.bottom;
+  //       targetMainAxisExtent = bounds.height;
+  //       break;
+  //     case AxisDirection.right:
+  //       mainAxisExtent = size.width;
+  //       leadingScrollOffset = bounds.left;
+  //       targetMainAxisExtent = bounds.width;
+  //       break;
+  //     case AxisDirection.down:
+  //       mainAxisExtent = size.height;
+  //       leadingScrollOffset = bounds.top;
+  //       targetMainAxisExtent = bounds.height;
+  //       break;
+  //     case AxisDirection.left:
+  //       mainAxisExtent = size.width;
+  //       leadingScrollOffset = contentSize.width - bounds.right;
+  //       targetMainAxisExtent = bounds.width;
+  //       break;
+  //   }
+
+  //   final double targetOffset = leadingScrollOffset -
+  //       (mainAxisExtent - targetMainAxisExtent) * alignment;
+  //   final Rect targetRect = bounds.shift(_paintOffsetForPosition(targetOffset));
+  //   return RevealedOffset(offset: targetOffset, rect: targetRect);
+  // }
+
   @override
-  RevealedOffset getOffsetToReveal(RenderObject target, double alignment,
-      {Rect? rect}) {
-    rect ??= target.paintBounds;
-    if (target is! RenderBox) {
-      return RevealedOffset(offset: offset.pixels, rect: rect);
-    }
+  RevealedOffset getOffsetToReveal(RenderObject target, double alignment, {Rect? rect, Axis? axis}) {
+      rect ??= target.paintBounds;
+      if (target is! RenderBox) {
+        return RevealedOffset(offset: offset.pixels, rect: rect);
+      }
 
-    final RenderBox targetBox = target;
-    final Matrix4 transform = targetBox.getTransformTo(this);
-    final Rect bounds = MatrixUtils.transformRect(transform, rect);
-    final Size contentSize = child!.size;
+      final RenderBox targetBox = target;
+      final Matrix4 transform = targetBox.getTransformTo(this);
+      final Rect bounds = MatrixUtils.transformRect(transform, rect);
+      final Size contentSize = child!.size;
 
-    late double leadingScrollOffset;
-    late double targetMainAxisExtent;
-    late double mainAxisExtent;
+      late double leadingScrollOffset;
+      late double targetMainAxisExtent;
+      late double mainAxisExtent;
 
-    switch (axisDirection) {
-      case AxisDirection.up:
-        mainAxisExtent = size.height;
-        leadingScrollOffset = contentSize.height - bounds.bottom;
-        targetMainAxisExtent = bounds.height;
-        break;
-      case AxisDirection.right:
-        mainAxisExtent = size.width;
-        leadingScrollOffset = bounds.left;
-        targetMainAxisExtent = bounds.width;
-        break;
-      case AxisDirection.down:
-        mainAxisExtent = size.height;
-        leadingScrollOffset = bounds.top;
-        targetMainAxisExtent = bounds.height;
-        break;
-      case AxisDirection.left:
-        mainAxisExtent = size.width;
-        leadingScrollOffset = contentSize.width - bounds.right;
-        targetMainAxisExtent = bounds.width;
-        break;
-    }
+       switch (axis ?? axisDirection) {
+        case AxisDirection.up:
+          mainAxisExtent = size.height;
+          leadingScrollOffset = contentSize.height - bounds.bottom;
+          targetMainAxisExtent = bounds.height;
+          break;
+        case AxisDirection.right:
+          mainAxisExtent = size.width;
+          leadingScrollOffset = bounds.left;
+          targetMainAxisExtent = bounds.width;
+          break;
+        case AxisDirection.down:
+          mainAxisExtent = size.height;
+          leadingScrollOffset = bounds.top;
+          targetMainAxisExtent = bounds.height;
+          break;
+        case AxisDirection.left:
+          mainAxisExtent = size.width;
+          leadingScrollOffset = contentSize.width - bounds.right;
+          targetMainAxisExtent = bounds.width;
+          break;
+      }
 
-    final double targetOffset = leadingScrollOffset -
-        (mainAxisExtent - targetMainAxisExtent) * alignment;
-    final Rect targetRect = bounds.shift(_paintOffsetForPosition(targetOffset));
-    return RevealedOffset(offset: targetOffset, rect: targetRect);
+      final double targetOffset = leadingScrollOffset -
+          (mainAxisExtent - targetMainAxisExtent) * alignment;
+      final Rect targetRect = bounds.shift(_paintOffsetForPosition(targetOffset));
+      return RevealedOffset(offset: targetOffset, rect: targetRect);
+
+    throw UnimplementedError();
   }
 
   @override
@@ -467,4 +514,6 @@ class _RenderSingleChildViewport extends RenderBox
         );
     }
   }
+
+
 }

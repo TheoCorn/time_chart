@@ -104,7 +104,7 @@ class TimeBarPainter extends BarPainter<TimeBarItem> {
           barPaint = globalPaint;
           break;
         case DateTimeRangeWithColor:
-          barPaint = barPaint = Paint()
+          barPaint = Paint()
             ..color = (offsetRange.data as DateTimeRangeWithColor).color
             ..style = PaintingStyle.fill
             ..strokeCap = StrokeCap.round;
